@@ -22,12 +22,12 @@ const _buttons = [
   _Btn('sin', display: 'sin(', eval: 'sin(', type: _BtnType.fn),
   _Btn('cos', display: 'cos(', eval: 'cos(', type: _BtnType.fn),
   _Btn('tan', display: 'tan(', eval: 'tan(', type: _BtnType.fn),
-  _Btn('ln', display: 'ln(', eval: 'log(', type: _BtnType.fn),
+  _Btn('ln', display: 'ln(', eval: 'ln(', type: _BtnType.fn),
   _Btn('^', type: _BtnType.operator),
   // Row 2 - inverse trig
-  _Btn('sin⁻¹', display: 'sin⁻¹(', eval: 'asin(', type: _BtnType.fn),
-  _Btn('cos⁻¹', display: 'cos⁻¹(', eval: 'acos(', type: _BtnType.fn),
-  _Btn('tan⁻¹', display: 'tan⁻¹(', eval: 'atan(', type: _BtnType.fn),
+  _Btn('sin⁻¹', display: 'sin⁻¹(', eval: 'arcsin(', type: _BtnType.fn),
+  _Btn('cos⁻¹', display: 'cos⁻¹(', eval: 'arccos(', type: _BtnType.fn),
+  _Btn('tan⁻¹', display: 'tan⁻¹(', eval: 'arctan(', type: _BtnType.fn),
   _Btn('√', display: '√(', eval: 'sqrt(', type: _BtnType.fn),
   _Btn('π', display: 'π', eval: 'pi', type: _BtnType.constant),
   // Row 3 - misc
