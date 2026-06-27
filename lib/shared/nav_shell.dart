@@ -26,12 +26,9 @@ class _NavShellState extends State<NavShell> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.bg,
-      body: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 220),
-        child: KeyedSubtree(
-          key: ValueKey(_index),
-          child: _screens[_index],
-        ),
+      body: IndexedStack(
+        index: _index,
+        children: _screens,
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
