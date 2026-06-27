@@ -294,7 +294,7 @@ class _PythagorasPainter extends CustomPainter {
     final cy = size.height / 2 + scale * 0.3;
 
     final p0 = Offset(cx - a * scale / 2, cy);
-    final p1 = Offset(cx + b * scale / 2, cy);
+    final p1 = Offset(cx + a * scale / 2, cy);
     final p2 = Offset(cx - a * scale / 2, cy - b * scale);
 
     // Triangle fill
@@ -483,8 +483,8 @@ class _UnitCirclePainter extends CustomPainter {
     for (final (lbl, offset) in [
       ('1', Offset(cx + r + 4, cy + 4)),
       ('-1', Offset(cx - r - 18, cy + 4)),
-      ('i', Offset(cx + 4, cy - r - 4)),
-      ('-i', Offset(cx + 4, cy + r + 4)),
+      ('1', Offset(cx + 4, cy - r - 4)),
+      ('-1', Offset(cx + 4, cy + r + 4)),
     ]) {
       _label(canvas, lbl, offset, AppColors.textMuted, size: 10);
     }
