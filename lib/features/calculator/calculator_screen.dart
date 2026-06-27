@@ -118,7 +118,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     int i = 0;
     while (i < s.length) {
       bool found = false;
-      for (final t in ['sin⁻¹(', 'cos⁻¹(', 'tan⁻¹(', 'sin(', 'cos(', 'tan(', 'ln(', 'sqrt(', 'asin(', 'acos(', 'atan(', 'log(', 'abs(', '√(', '/100', '^2']) {
+      // Uzun token'lar önce gelmeli; hem display hem eval tarafını kapsar.
+      // display: sin⁻¹(/cos⁻¹(/tan⁻¹(, √(, ans
+      // eval:    arcsin(/arccos(/arctan(, ln(, sqrt(, abs(, /100, ^2, pi
+      for (final t in ['sin⁻¹(', 'cos⁻¹(', 'tan⁻¹(', 'arcsin(', 'arccos(', 'arctan(', 'sin(', 'cos(', 'tan(', 'ln(', 'sqrt(', 'abs(', '√(', '/100', '^2', 'ans', 'pi']) {
         if (s.startsWith(t, i)) {
           tokens.add(t);
           i += t.length;
