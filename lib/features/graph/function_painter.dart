@@ -167,8 +167,10 @@ class FunctionPainter extends CustomPainter {
         continue;
       }
 
-      // Break on discontinuities (asymptotes)
-      if (prevY != null && (mathY - prevY).abs() > 20 / pixelsPerUnit * size.height) {
+      // Süreksizlik (asimptot) tespiti: ardışık iki noktanın ekran Y farkı
+      // tuval yüksekliğini aşıyorsa path'i kır. Eşik matematiksel birim
+      // cinsinden: size.height / pixelsPerUnit (tam ekran yüksekliği kadar sıçrama).
+      if (prevY != null && (mathY - prevY).abs() > size.height / pixelsPerUnit) {
         if (started) paths.add(current);
         current = Path();
         started = false;
