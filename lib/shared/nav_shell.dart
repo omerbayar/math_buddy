@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../core/theme.dart';
+import '../features/home/home_screen.dart';
 import '../features/calculator/calculator_screen.dart';
 import '../features/graph/graph_screen.dart';
 import '../features/geometry/geometry_screen.dart';
@@ -15,12 +16,25 @@ class NavShell extends StatefulWidget {
 class _NavShellState extends State<NavShell> {
   int _index = 0;
 
-  static final _screens = [
-    const CalculatorScreen(),
-    const GraphScreen(),
-    const GeometryScreen(),
-    const StatsScreen(),
-  ];
+  // Screens'i late final olarak initState'te kuruyoruz çünkü
+  // HomeScreen'e _navigateTo callback'ini geçmemiz gerekiyor.
+  late final List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+    _screens = [
+      HomeScreen(onNavigate: _navigateTo),
+      const CalculatorScreen(),
+      const GraphScreen(),
+      const GeometryScreen(),
+      const StatsScreen(),
+    ];
+  }
+
+  void _navigateTo(int index) {
+    setState(() => _index = index);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +52,13 @@ class _NavShellState extends State<NavShell> {
         ),
         child: NavigationBar(
           selectedIndex: _index,
-          onDestinationSelected: (i) => setState(() => _index = i),
+          onDestinationSelected: _navigateTo,
           destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.home_outlined),
+              selectedIcon: Icon(Icons.home),
+              label: 'Ana Sayfa',
+            ),
             NavigationDestination(
               icon: Icon(Icons.calculate_outlined),
               selectedIcon: Icon(Icons.calculate),
