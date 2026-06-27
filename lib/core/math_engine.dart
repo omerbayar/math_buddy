@@ -47,9 +47,19 @@ class MathEngine {
         .replaceAll('÷', '/')
         .replaceAll('−', '-')
         .replaceAll('π', 'pi')
-        // implicit mult: digit followed by letter/(
+        // örtük çarpım: rakam ardından fonksiyon adı (2sin(x), 3cos(x), 2ln(x) vb.)
+        .replaceAllMapped(
+          RegExp(r'(\d)(sin|cos|tan|ln|sqrt|abs|arcsin|arccos|arctan)'),
+          (m) => '${m[1]}*${m[2]}',
+        )
+        // örtük çarpım: rakam ardından pi, e veya açılış parantezi
         .replaceAllMapped(
           RegExp(r'(\d)(pi|e\b|\()'),
+          (m) => '${m[1]}*${m[2]}',
+        )
+        // örtük çarpım: rakam ardından x değişkeni (2x, 3x, 2x^2 vb.)
+        .replaceAllMapped(
+          RegExp(r'(\d)(x)'),
           (m) => '${m[1]}*${m[2]}',
         );
   }
