@@ -123,7 +123,7 @@ class FunctionPainter extends CustomPainter {
     final tp = TextPainter(
       text: TextSpan(
         text: text,
-        style: const TextStyle(
+        style: TextStyle(
           color: AppColors.textMuted,
           fontSize: 9,
           fontFamily: 'monospace',

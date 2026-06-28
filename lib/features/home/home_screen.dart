@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/theme.dart';
+import '../../core/theme_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   final void Function(int index) onNavigate;
@@ -65,6 +66,14 @@ class _HomeScreenState extends State<HomeScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Üst aksiyon satırı (tema butonu)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const _ThemeToggleButton(),
+            ],
+          ),
+          const SizedBox(height: 8),
           // Ana başlık
           ShaderMask(
             shaderCallback: (bounds) => const LinearGradient(
@@ -325,6 +334,43 @@ class _FeatureCardState extends State<_FeatureCard>
           ),
         ),
       ),
+    );
+  }
+}
+
+// ── Tema geçiş butonu ────────────────────────────────────────
+class _ThemeToggleButton extends StatelessWidget {
+  const _ThemeToggleButton();
+
+  IconData _iconFor(ThemeMode mode) => switch (mode) {
+        ThemeMode.system => Icons.brightness_auto_rounded,
+        ThemeMode.light => Icons.light_mode_rounded,
+        ThemeMode.dark => Icons.dark_mode_rounded,
+      };
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: appThemeMode,
+      builder: (context, mode, _) {
+        return GestureDetector(
+          onTap: cycleThemeMode,
+          child: Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: AppColors.surfaceUp,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.surfaceHigh, width: 1),
+            ),
+            child: Icon(
+              _iconFor(mode),
+              color: AppColors.primaryLight,
+              size: 20,
+            ),
+          ),
+        );
+      },
     );
   }
 }
