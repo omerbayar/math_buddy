@@ -32,7 +32,6 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return SafeArea(
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -40,11 +39,9 @@ class _HomeScreenState extends State<HomeScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeader(size),
+            _buildHeader(),
             const SizedBox(height: 32),
             _buildGrid(),
-            const SizedBox(height: 24),
-            _buildFooter(),
           ],
         ),
       ),
@@ -52,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   // ── Hero başlık ─────────────────────────────────────────────
-  Widget _buildHeader(Size size) {
+  Widget _buildHeader() {
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
@@ -68,20 +65,9 @@ class _HomeScreenState extends State<HomeScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Dekoratif satır
-          Row(
-            children: [
-              _GlowDot(color: AppColors.primary),
-              const SizedBox(width: 8),
-              _GlowDot(color: AppColors.cyan),
-              const SizedBox(width: 8),
-              _GlowDot(color: AppColors.pink),
-            ],
-          ),
-          const SizedBox(height: 16),
           // Ana başlık
           ShaderMask(
-            shaderCallback: (bounds) => LinearGradient(
+            shaderCallback: (bounds) => const LinearGradient(
               colors: [AppColors.primaryLight, AppColors.cyanLight],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
@@ -91,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen>
               style: GoogleFonts.inter(
                 fontSize: 40,
                 fontWeight: FontWeight.w800,
-                color: Colors.white, // ShaderMask bunu override eder
+                color: Colors.white,
                 letterSpacing: -1.5,
               ),
             ),
@@ -107,8 +93,8 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
           const SizedBox(height: 20),
-          // Dekoratif matematiksel formüller
-          _MathFormulaChips(),
+          // Tanınır matematiksel formüller
+          const _MathFormulaChips(),
         ],
       ),
     );
@@ -118,22 +104,22 @@ class _HomeScreenState extends State<HomeScreen>
   Widget _buildGrid() {
     const features = [
       _Feature(
-        index: 1, // NavShell'deki sekme indeksi (0=Ana Sayfa)
+        index: 1,
         title: 'Hesapla',
         subtitle: 'Bilimsel hesap makinesi',
         icon: Icons.calculate_rounded,
         color: AppColors.primary,
         colorLight: AppColors.primaryLight,
-        formula: 'f(x) = ...',
+        formula: 'x = (−b ± √Δ) / 2a',
       ),
       _Feature(
         index: 2,
         title: 'Grafik',
-        subtitle: 'f(x) fonksiyon grafikleri',
+        subtitle: 'Fonksiyon grafiklerini çiz',
         icon: Icons.show_chart_rounded,
         color: AppColors.cyan,
         colorLight: AppColors.cyanLight,
-        formula: 'y = sin(x)',
+        formula: 'f(x) = sin x',
       ),
       _Feature(
         index: 3,
@@ -147,11 +133,11 @@ class _HomeScreenState extends State<HomeScreen>
       _Feature(
         index: 4,
         title: 'İstatistik',
-        subtitle: 'Normal dağılım eğrisi',
+        subtitle: 'Ortalama, varyans, dağılım',
         icon: Icons.bar_chart_rounded,
         color: AppColors.green,
         colorLight: AppColors.greenLight,
-        formula: 'μ, σ',
+        formula: 'μ = Σx / n',
       ),
     ];
 
@@ -166,7 +152,6 @@ class _HomeScreenState extends State<HomeScreen>
       ),
       itemCount: features.length,
       itemBuilder: (context, i) {
-        // Staggered animasyon: her kart sırayla gelir
         final start = 0.15 + i * 0.12;
         final end = (start + 0.45).clamp(0.0, 1.0);
         final anim = CurvedAnimation(
@@ -191,28 +176,6 @@ class _HomeScreenState extends State<HomeScreen>
           ),
         );
       },
-    );
-  }
-
-  // ── Alt bilgi ───────────────────────────────────────────────
-  Widget _buildFooter() {
-    final t = CurvedAnimation(
-      parent: _controller,
-      curve: const Interval(0.7, 1.0, curve: Curves.easeOut),
-    );
-    return AnimatedBuilder(
-      animation: t,
-      builder: (context, child) => Opacity(opacity: t.value, child: child),
-      child: Center(
-        child: Text(
-          '✦  4 araç · sınırsız keşif',
-          style: GoogleFonts.inter(
-            fontSize: 12,
-            color: AppColors.textMuted,
-            letterSpacing: 0.5,
-          ),
-        ),
-      ),
     );
   }
 }
@@ -325,13 +288,13 @@ class _FeatureCardState extends State<_FeatureCard>
                   child: Icon(f.icon, color: f.colorLight, size: 26),
                 ),
                 const Spacer(),
-                // Formül dekorasyon
+                // Formül
                 Text(
                   f.formula,
                   style: GoogleFonts.jetBrainsMono(
                     fontSize: 11,
-                    color: f.colorLight.withAlpha(160),
-                    fontWeight: FontWeight.w500,
+                    color: f.colorLight.withAlpha(180),
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -366,34 +329,13 @@ class _FeatureCardState extends State<_FeatureCard>
   }
 }
 
-// ── Dekoratif parlayan nokta ─────────────────────────────────
-class _GlowDot extends StatelessWidget {
-  final Color color;
-  const _GlowDot({required this.color});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 8,
-      height: 8,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(color: color.withAlpha(150), blurRadius: 8, spreadRadius: 2),
-        ],
-      ),
-    );
-  }
-}
-
 // ── Matematiksel formül chip'leri ────────────────────────────
 class _MathFormulaChips extends StatelessWidget {
   const _MathFormulaChips();
 
   @override
   Widget build(BuildContext context) {
-    const formulas = ['e^(iπ)+1=0', 'sin²+cos²=1', '∫f(x)dx'];
+    const formulas = ['Δ = b²−4ac', 'eⁱπ + 1 = 0', 'logₐaˣ = x'];
     return Wrap(
       spacing: 8,
       children: formulas.map((f) {
@@ -408,7 +350,7 @@ class _MathFormulaChips extends StatelessWidget {
             f,
             style: GoogleFonts.jetBrainsMono(
               fontSize: 11,
-              color: AppColors.textMuted,
+              color: AppColors.textSecondary,
               fontWeight: FontWeight.w500,
             ),
           ),
