@@ -66,10 +66,12 @@ class _HomeScreenState extends State<HomeScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Üst aksiyon satırı (tema butonu)
+          // Üst aksiyon satırı (tema + dil)
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              const _LanguageButton(),
+              const SizedBox(width: 8),
               const _ThemeToggleButton(),
             ],
           ),
@@ -332,6 +334,174 @@ class _FeatureCardState extends State<_FeatureCard>
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+// ── Dil seçim butonu (placeholder) ──────────────────────────
+class _LanguageButton extends StatelessWidget {
+  const _LanguageButton();
+
+  void _showLanguageSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Dil / Language',
+                  style: GoogleFonts.inter(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                    letterSpacing: -0.3,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // Türkçe — aktif
+                _LangOption(
+                  flag: '🇹🇷',
+                  label: 'Türkçe',
+                  isActive: true,
+                  onTap: () => Navigator.pop(ctx),
+                ),
+                const SizedBox(height: 10),
+                // İngilizce — yakında
+                _LangOption(
+                  flag: '🇬🇧',
+                  label: 'English',
+                  isActive: false,
+                  onTap: () {
+                    Navigator.pop(ctx);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'İngilizce desteği yakında geliyor!',
+                          style: GoogleFonts.inter(fontSize: 13),
+                        ),
+                        backgroundColor: AppColors.surfaceHigh,
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => _showLanguageSheet(context),
+      child: Container(
+        height: 40,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        decoration: BoxDecoration(
+          color: AppColors.surfaceUp,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: AppColors.surfaceHigh, width: 1),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.language_rounded, color: AppColors.primaryLight, size: 16),
+            const SizedBox(width: 5),
+            Text(
+              'TR',
+              style: GoogleFonts.inter(
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: AppColors.primaryLight,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── Dil seçenek satırı ───────────────────────────────────────
+class _LangOption extends StatelessWidget {
+  final String flag;
+  final String label;
+  final bool isActive;
+  final VoidCallback onTap;
+
+  const _LangOption({
+    required this.flag,
+    required this.label,
+    required this.isActive,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          color: isActive
+              ? AppColors.primary.withAlpha(20)
+              : AppColors.surfaceUp,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
+            color: isActive ? AppColors.primary.withAlpha(80) : AppColors.surfaceHigh,
+            width: 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Text(flag, style: const TextStyle(fontSize: 20)),
+            const SizedBox(width: 12),
+            Text(
+              label,
+              style: GoogleFonts.inter(
+                fontSize: 15,
+                fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
+                color: isActive ? AppColors.primaryLight : AppColors.textSecondary,
+              ),
+            ),
+            const Spacer(),
+            if (!isActive)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: AppColors.surfaceHigh,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  'yakında',
+                  style: GoogleFonts.inter(
+                    fontSize: 10,
+                    color: AppColors.textMuted,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              )
+            else
+              Icon(Icons.check_rounded, color: AppColors.primaryLight, size: 18),
+          ],
         ),
       ),
     );
