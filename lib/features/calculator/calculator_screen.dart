@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../core/app_localization.dart';
 import '../../core/theme.dart';
 import '../../core/math_engine.dart';
 
@@ -94,7 +95,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         case _BtnType.equals:
           if (_eval.isEmpty) return;
           final res = MathEngine.evaluate(_eval);
-          if (res.isNotEmpty && res != 'Tanımsız') {
+          if (res.isNotEmpty && res != translate('undefined')) {
             _history.insert(0, '$_display = $res');
             if (_history.length > 20) _history.removeLast();
             _lastAnswer = res;
@@ -157,7 +158,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       child: Row(
         children: [
           Text(
-            'Hesaplayıcı',
+            translate('calculator_title'),
             style: GoogleFonts.inter(
               fontSize: 13,
               fontWeight: FontWeight.w600,
@@ -174,7 +175,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   Icon(Icons.history, size: 14, color: AppColors.primaryLight),
                   const SizedBox(width: 4),
                   Text(
-                    'Geçmiş',
+                    translate('history'),
                     style: GoogleFonts.inter(
                       fontSize: 12,
                       color: AppColors.primaryLight,
@@ -277,7 +278,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             child: Row(
               children: [
                 Text(
-                  'Hesaplama Geçmişi',
+                  translate('calculation_history'),
                   style: GoogleFonts.inter(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -291,7 +292,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     Navigator.pop(context);
                   },
                   child: Text(
-                    'Temizle',
+                    translate('clear'),
                     style: GoogleFonts.inter(
                       fontSize: 13,
                       color: AppColors.redLight,

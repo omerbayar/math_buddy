@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:math_expressions/math_expressions.dart';
+import 'app_localization.dart';
 
 class MathEngine {
   static final GrammarParser _parser = GrammarParser();
@@ -11,7 +12,7 @@ class MathEngine {
       final exp = _parser.parse(processed);
       final cm = _buildContext();
       final result = exp.evaluate(EvaluationType.REAL, cm) as double;
-      if (result.isNaN) return 'Tanımsız';
+      if (result.isNaN) return translate('undefined');
       if (result.isInfinite) return result > 0 ? '∞' : '-∞';
       return _format(result);
     } catch (_) {

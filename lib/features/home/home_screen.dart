@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../core/app_localization.dart';
+import '../../core/locale_controller.dart';
 import '../../core/theme.dart';
 import '../../core/theme_controller.dart';
 
@@ -49,7 +51,6 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  // ── Hero başlık ─────────────────────────────────────────────
   Widget _buildHeader() {
     return AnimatedBuilder(
       animation: _controller,
@@ -66,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Üst aksiyon satırı (tema + dil)
+          // Üst aksiyon satırı
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -76,7 +77,6 @@ class _HomeScreenState extends State<HomeScreen>
             ],
           ),
           const SizedBox(height: 8),
-          // Ana başlık
           ShaderMask(
             shaderCallback: (bounds) => const LinearGradient(
               colors: [AppColors.primaryLight, AppColors.cyanLight],
@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           const SizedBox(height: 8),
           Text(
-            'Matematiği görsel olarak keşfet',
+            translate('app_subtitle'),
             style: GoogleFonts.inter(
               fontSize: 16,
               color: AppColors.textSecondary,
@@ -104,20 +104,18 @@ class _HomeScreenState extends State<HomeScreen>
             ),
           ),
           const SizedBox(height: 20),
-          // Tanınır matematiksel formüller
           const _MathFormulaChips(),
         ],
       ),
     );
   }
 
-  // ── Özellik kartları ızgarası ────────────────────────────────
   Widget _buildGrid() {
-    const features = [
+    final features = [
       _Feature(
         index: 1,
-        title: 'Hesapla',
-        subtitle: 'Bilimsel hesap makinesi',
+        title: translate('nav_calculator'),
+        subtitle: translate('card_calculator_subtitle'),
         icon: Icons.calculate_rounded,
         color: AppColors.primary,
         colorLight: AppColors.primaryLight,
@@ -125,8 +123,8 @@ class _HomeScreenState extends State<HomeScreen>
       ),
       _Feature(
         index: 2,
-        title: 'Grafik',
-        subtitle: 'Fonksiyon grafiklerini çiz',
+        title: translate('nav_graph'),
+        subtitle: translate('card_graph_subtitle'),
         icon: Icons.show_chart_rounded,
         color: AppColors.cyan,
         colorLight: AppColors.cyanLight,
@@ -134,8 +132,8 @@ class _HomeScreenState extends State<HomeScreen>
       ),
       _Feature(
         index: 3,
-        title: 'Geometri',
-        subtitle: 'Pisagor & birim çember',
+        title: translate('nav_geometry'),
+        subtitle: translate('card_geometry_subtitle'),
         icon: Icons.pentagon_rounded,
         color: AppColors.pink,
         colorLight: AppColors.pinkLight,
@@ -143,8 +141,8 @@ class _HomeScreenState extends State<HomeScreen>
       ),
       _Feature(
         index: 4,
-        title: 'İstatistik',
-        subtitle: 'Ortalama, varyans, dağılım',
+        title: translate('nav_stats'),
+        subtitle: translate('card_stats_subtitle'),
         icon: Icons.bar_chart_rounded,
         color: AppColors.green,
         colorLight: AppColors.greenLight,
@@ -191,7 +189,6 @@ class _HomeScreenState extends State<HomeScreen>
   }
 }
 
-// ── Özellik modeli ───────────────────────────────────────────
 class _Feature {
   final int index;
   final String title;
@@ -212,7 +209,6 @@ class _Feature {
   });
 }
 
-// ── Özellik kartı ────────────────────────────────────────────
 class _FeatureCard extends StatefulWidget {
   final _Feature feature;
   final VoidCallback onTap;
@@ -288,7 +284,6 @@ class _FeatureCardState extends State<_FeatureCard>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // İkon alanı
                 Container(
                   width: 48,
                   height: 48,
@@ -299,7 +294,6 @@ class _FeatureCardState extends State<_FeatureCard>
                   child: Icon(f.icon, color: f.colorLight, size: 26),
                 ),
                 const Spacer(),
-                // Formül
                 Text(
                   f.formula,
                   style: GoogleFonts.jetBrainsMono(
@@ -309,7 +303,6 @@ class _FeatureCardState extends State<_FeatureCard>
                   ),
                 ),
                 const SizedBox(height: 6),
-                // Başlık
                 Text(
                   f.title,
                   style: GoogleFonts.inter(
@@ -320,7 +313,6 @@ class _FeatureCardState extends State<_FeatureCard>
                   ),
                 ),
                 const SizedBox(height: 3),
-                // Alt başlık
                 Text(
                   f.subtitle,
                   style: GoogleFonts.inter(
@@ -340,7 +332,7 @@ class _FeatureCardState extends State<_FeatureCard>
   }
 }
 
-// ── Dil seçim butonu (placeholder) ──────────────────────────
+// ── Dil seçim butonu ─────────────────────────────────────────
 class _LanguageButton extends StatelessWidget {
   const _LanguageButton();
 
@@ -352,57 +344,48 @@ class _LanguageButton extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (ctx) {
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Dil / Language',
-                  style: GoogleFonts.inter(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                    letterSpacing: -0.3,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                // Türkçe — aktif
-                _LangOption(
-                  flag: '🇹🇷',
-                  label: 'Türkçe',
-                  isActive: true,
-                  onTap: () => Navigator.pop(ctx),
-                ),
-                const SizedBox(height: 10),
-                // İngilizce — yakında
-                _LangOption(
-                  flag: '🇬🇧',
-                  label: 'English',
-                  isActive: false,
-                  onTap: () {
-                    Navigator.pop(ctx);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'İngilizce desteği yakında geliyor!',
-                          style: GoogleFonts.inter(fontSize: 13),
-                        ),
-                        backgroundColor: AppColors.surfaceHigh,
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        duration: const Duration(seconds: 2),
+        return ValueListenableBuilder<Locale>(
+          valueListenable: appLocale,
+          builder: (context, locale, _) {
+            final activeLang = locale.languageCode;
+            return SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      translate('language_sheet_title'),
+                      style: GoogleFonts.inter(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                        letterSpacing: -0.3,
                       ),
-                    );
-                  },
+                    ),
+                    const SizedBox(height: 16),
+                    ...supportedLanguages.entries.map((entry) {
+                      final code = entry.key;
+                      final (name, flag) = entry.value;
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: _LangOption(
+                          flag: flag,
+                          label: name,
+                          isActive: activeLang == code,
+                          onTap: () async {
+                            Navigator.pop(ctx);
+                            await setLocale(code);
+                          },
+                        ),
+                      );
+                    }),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
       },
     );
@@ -425,12 +408,15 @@ class _LanguageButton extends StatelessWidget {
           children: [
             Icon(Icons.language_rounded, color: AppColors.primaryLight, size: 16),
             const SizedBox(width: 5),
-            Text(
-              'TR',
-              style: GoogleFonts.inter(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: AppColors.primaryLight,
+            ValueListenableBuilder<Locale>(
+              valueListenable: appLocale,
+              builder: (_, locale, __) => Text(
+                locale.languageCode.toUpperCase(),
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primaryLight,
+                ),
               ),
             ),
           ],
@@ -440,7 +426,6 @@ class _LanguageButton extends StatelessWidget {
   }
 }
 
-// ── Dil seçenek satırı ───────────────────────────────────────
 class _LangOption extends StatelessWidget {
   final String flag;
   final String label;
@@ -483,23 +468,7 @@ class _LangOption extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            if (!isActive)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: AppColors.surfaceHigh,
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  'yakında',
-                  style: GoogleFonts.inter(
-                    fontSize: 10,
-                    color: AppColors.textMuted,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              )
-            else
+            if (isActive)
               Icon(Icons.check_rounded, color: AppColors.primaryLight, size: 18),
           ],
         ),
@@ -545,7 +514,6 @@ class _ThemeToggleButton extends StatelessWidget {
   }
 }
 
-// ── Matematiksel formül chip'leri ────────────────────────────
 class _MathFormulaChips extends StatelessWidget {
   const _MathFormulaChips();
 

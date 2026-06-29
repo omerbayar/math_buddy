@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../core/app_localization.dart';
 import '../../core/theme.dart';
 
 class GeometryScreen extends StatefulWidget {
@@ -56,7 +57,7 @@ class _GeometryScreenState extends State<GeometryScreen>
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(
-          'Geometri',
+          translate('geometry_title'),
           style: GoogleFonts.inter(
             fontSize: 13,
             fontWeight: FontWeight.w600,
@@ -73,9 +74,9 @@ class _GeometryScreenState extends State<GeometryScreen>
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
-          _Tab('Pisagor Teoremi', 0 == _tab, () => setState(() => _tab = 0)),
+          _Tab(translate('pythagoras_theorem'), 0 == _tab, () => setState(() => _tab = 0)),
           const SizedBox(width: 8),
-          _Tab('Birim Çember', 1 == _tab, () => setState(() => _tab = 1)),
+          _Tab(translate('unit_circle'), 1 == _tab, () => setState(() => _tab = 1)),
         ],
       ),
     );

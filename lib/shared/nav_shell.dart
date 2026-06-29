@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../core/app_localization.dart';
 import '../core/theme.dart';
 import '../features/home/home_screen.dart';
 import '../features/calculator/calculator_screen.dart';
@@ -22,10 +23,10 @@ class _NavShellState extends State<NavShell> {
   // Yan sekmeler: görsel sıralama → sekme indeksi
   // Düzen: [Hesapla(1), Grafik(2), [ANA(0)], Geometri(3), İstatistik(4)]
   static const _sideItems = [
-    _NavItem(index: 1, icon: Icons.calculate_outlined, selectedIcon: Icons.calculate_rounded, label: 'Hesapla'),
-    _NavItem(index: 2, icon: Icons.show_chart_outlined, selectedIcon: Icons.show_chart_rounded, label: 'Grafik'),
-    _NavItem(index: 3, icon: Icons.pentagon_outlined, selectedIcon: Icons.pentagon_rounded, label: 'Geometri'),
-    _NavItem(index: 4, icon: Icons.bar_chart_outlined, selectedIcon: Icons.bar_chart_rounded, label: 'İstatistik'),
+    _NavItem(index: 1, icon: Icons.calculate_outlined, selectedIcon: Icons.calculate_rounded, labelKey: 'nav_calculator'),
+    _NavItem(index: 2, icon: Icons.show_chart_outlined, selectedIcon: Icons.show_chart_rounded, labelKey: 'nav_graph'),
+    _NavItem(index: 3, icon: Icons.pentagon_outlined, selectedIcon: Icons.pentagon_rounded, labelKey: 'nav_geometry'),
+    _NavItem(index: 4, icon: Icons.bar_chart_outlined, selectedIcon: Icons.bar_chart_rounded, labelKey: 'nav_stats'),
   ];
 
   static const double _barHeight = 68;
@@ -88,13 +89,13 @@ class _NavItem {
   final int index;
   final IconData icon;
   final IconData selectedIcon;
-  final String label;
+  final String labelKey;
 
   const _NavItem({
     required this.index,
     required this.icon,
     required this.selectedIcon,
-    required this.label,
+    required this.labelKey,
   });
 }
 
@@ -282,7 +283,7 @@ class _SideNavItem extends StatelessWidget {
           ),
           const SizedBox(height: 3),
           Text(
-            item.label,
+            translate(item.labelKey),
             style: GoogleFonts.inter(
               fontSize: 10,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,

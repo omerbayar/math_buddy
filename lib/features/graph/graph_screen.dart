@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../core/app_localization.dart';
 import '../../core/theme.dart';
 import 'function_painter.dart';
 
@@ -65,7 +66,7 @@ class _GraphScreenState extends State<GraphScreen> {
       child: Row(
         children: [
           Text(
-            'Grafik',
+            translate('graph_title'),
             style: GoogleFonts.inter(
               fontSize: 13,
               fontWeight: FontWeight.w600,
@@ -83,7 +84,7 @@ class _GraphScreenState extends State<GraphScreen> {
               children: [
                 Icon(Icons.center_focus_strong_outlined, size: 14, color: AppColors.textMuted),
                 const SizedBox(width: 4),
-                Text('Sıfırla', style: GoogleFonts.inter(fontSize: 12, color: AppColors.textMuted)),
+                Text(translate('reset'), style: GoogleFonts.inter(fontSize: 12, color: AppColors.textMuted)),
               ],
             ),
           ),
@@ -151,7 +152,7 @@ class _GraphScreenState extends State<GraphScreen> {
                 color: AppColors.textPrimary,
               ),
               decoration: InputDecoration(
-                hintText: 'f(x) gir: sin(x), x^2, ...',
+                hintText: translate('graph_input_hint'),
                 filled: true,
                 fillColor: AppColors.surface,
                 border: OutlineInputBorder(

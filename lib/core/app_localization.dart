@@ -1,0 +1,76 @@
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+/// Dil dosyalarını yükler ve çevirileri singleton üzerinden sunar.
+class AppLocalization {
+  final Locale locale;
+  AppLocalization(this.locale);
+
+  static AppLocalization? _instance;
+
+  static const LocalizationsDelegate<AppLocalization> delegate =
+      _AppLocalizationDelegate();
+
+  Map<String, String> _localizedStrings = {};
+
+  Future<bool> load() async {
+    final jsonString = await rootBundle.loadString(
+      'assets/translations/${locale.languageCode}.json',
+    );
+    final Map<String, dynamic> jsonMap = json.decode(jsonString);
+    _localizedStrings = jsonMap.map(
+      (key, value) => MapEntry(key, value.toString()),
+    );
+    _instance = this;
+    return true;
+  }
+
+  String get(String key, [Map<String, String>? params]) {
+    var value = _localizedStrings[key] ?? key;
+    if (params != null) {
+      params.forEach((paramKey, paramValue) {
+        value = value.replaceAll('{$paramKey}', paramValue);
+      });
+    }
+    return value;
+  }
+
+  static List<Locale> get supportedLocales => const [
+    Locale('en'),
+    Locale('tr'),
+    Locale('de'),
+    Locale('ro'),
+    Locale('fr'),
+    Locale('it'),
+    Locale('es'),
+    Locale('ru'),
+  ];
+}
+
+class _AppLocalizationDelegate
+    extends LocalizationsDelegate<AppLocalization> {
+  const _AppLocalizationDelegate();
+
+  @override
+  bool isSupported(Locale locale) =>
+      ['en', 'tr', 'de', 'ro', 'fr', 'it', 'es', 'ru']
+          .contains(locale.languageCode);
+
+  @override
+  Future<AppLocalization> load(Locale locale) async {
+    final localization = AppLocalization(locale);
+    await localization.load();
+    return localization;
+  }
+
+  @override
+  bool shouldReload(_AppLocalizationDelegate old) => false;
+}
+
+/// Global çeviri fonksiyonu — BuildContext gerektirmez.
+/// Kullanım: Text(translate("nav_calculator"))
+String translate(String key, [Map<String, String>? params]) {
+  if (AppLocalization._instance == null) return key;
+  return AppLocalization._instance!.get(key, params);
+}

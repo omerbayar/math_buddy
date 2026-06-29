@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../core/app_localization.dart';
 import '../../core/theme.dart';
 
 class StatsScreen extends StatefulWidget {
@@ -54,7 +55,7 @@ class _StatsScreenState extends State<StatsScreen> {
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(
-          'İstatistik',
+          translate('stats_title'),
           style: GoogleFonts.inter(
             fontSize: 13,
             fontWeight: FontWeight.w600,
@@ -138,7 +139,7 @@ class _StatsScreenState extends State<StatsScreen> {
       child: Column(
         children: [
           _ControlRow(
-            label: 'μ  Ortalama',
+            label: 'μ  ${translate('stat_mean')}',
             value: _mean,
             min: -5,
             max: 5,
@@ -148,7 +149,7 @@ class _StatsScreenState extends State<StatsScreen> {
           ),
           const SizedBox(height: 8),
           _ControlRow(
-            label: 'σ  Std. Sapma',
+            label: 'σ  ${translate('stat_std_dev')}',
             value: _sigma,
             min: 0.1,
             max: 3,

@@ -9,9 +9,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
   cupertino_icons: ^1.0.8
   math_expressions: ^2.4.0
   google_fonts: ^6.2.1
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -20,3 +24,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/translations/
